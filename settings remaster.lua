@@ -56,7 +56,7 @@ function settings.new()
 		self = setmetatable(loadstring('return ' .. readfile(fileName))(), {__index = settings});
 	else
 		self = setmetatable({darkMode = true}, {__index = settings});
-		writefile(fileName, tableToString(self));
+		writefile(fileName, tableToString({darkMode = true}));
 	end;
 
 	return self;
