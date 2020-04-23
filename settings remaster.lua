@@ -56,7 +56,7 @@ function settings.new()
 		self = setmetatable(loadstring('return ' .. readfile(fileName))(), {__index = settings});
 	else
 		self = setmetatable({darkMode = true}, {__index = settings});
-		writefile(fileName, tableToString({darkMode = true}));
+		writefile(fileName, tableToString(self));
 	end;
 
 	return self;
@@ -92,8 +92,20 @@ function settings:load(gameName, data)
 	return self[gameName];
 end;
 
-function settings:save()
-	writefile(fileName, tableToString(self));
+function settings:save(gameName)
+	local temp = settings.new();
+
+	if gameName then
+		temp[gameName] = self;
+	else
+		for i,v in pairs(temp) do
+			if type(v) ~= 'table' then
+				temp[i] = self[i];
+			end;
+		end;
+	end;
+
+	writefile(fileName, tableToString(temp));
 end;
 
 return settings;
