@@ -92,20 +92,8 @@ function settings:load(gameName, data)
 	return self[gameName];
 end;
 
-function settings:save(gameName)
-	local temp = settings.new();
-
-	if gameName then
-		temp[gameName] = self;
-	else
-		for i,v in pairs(temp) do
-			if type(v) ~= 'table' then
-				temp[i] = self[i];
-			end;
-		end;
-	end;
-
-	writefile(fileName, tableToString(temp));
+function settings:save()
+	writefile(fileName, tableToString(self));
 end;
 
 return settings;
