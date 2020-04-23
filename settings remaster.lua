@@ -49,51 +49,53 @@ local function tableToString(data)
 	return '{' .. result .. '}';
 end;
 
-function settings.new()
+function settings.new(location)
 	local self;
 
 	if isfile(fileName) then
 		self = setmetatable(loadstring('return ' .. readfile(fileName))(), {__index = settings});
 	else
-		self = setmetatable({darkMode = true}, {__index = settings});
+		self = setmetatable({}, {__index = settings});
 		writefile(fileName, tableToString(self));
 	end;
 
-	return self;
+	return {self, location};
 end;
 
-function settings:load(gameName, data)
-	if not self[gameName] then
-		self[gameName] = data;
-		return self[gameName];
+function settings:load(data)
+	if not self[1][self[2]] then
+		self[1][self[2]] = data;
+		writefile(fileName, tableToString(self[1]));
+		return {self[1][self[2]], self[2]};
 	end;
 
 	local update = false;
-	local temp = {};
 
-	for i,v in pairs(self[gameName]) do
+	for i,v in pairs(self[1][self[2]]) do
 		if data[tostring(i)] == nil then
-			self[gameName][tostring(i)] = nil;
+			self[1][self[2]][tostring(i)] = nil;
 			update = true;
 		end;
 	end;
 
 	for i,v in pairs(data) do
-		if self[gameName][tostring(i)] == nil then
-			self[gameName][tostring(i)] = v;
+		if self[1][self[2]][tostring(i)] == nil then
+			self[1][self[2]][tostring(i)] = v;
 			update = true;
 		end;
 	end;
 
 	if update then
-		writefile(fileName, tableToString(self));
+		writefile(fileName, tableToString(self[1]));
 	end;
 
-	return self[gameName];
+	return {self[1][self[2]], self[2]};
 end;
 
 function settings:save()
-	writefile(fileName, tableToString(self));
+	local temp = settings.new();
+	temp[self[2]] = self[1][self[2]];
+	writefile(fileName, tableToString(temp));
 end;
 
 return settings;
