@@ -55,7 +55,7 @@ function modules:toggle()
     elseif not self.toggled then
         self.isRunning = false;
     end;
-    print('hello');
+    print(self.isRunning);
 end;
 
 return modules;
