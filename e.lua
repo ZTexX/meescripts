@@ -54,6 +54,8 @@ function settings.new(location)
 		self = setmetatable({self, location}, {__index = settings});
 	end;
 
+	if location == nil then return self end;
+
 	local update = false;
 	for i,v in pairs(self[1]) do
 		if v == {} then
@@ -61,10 +63,11 @@ function settings.new(location)
 			update = true;
 		end;
 	end;
+
 	if update then
 		writefile(fileName, tableToString(self[1]));
 	end;
-	print(self[2])
+
 	if self[1][self[2]] == nil then
 		self[1][self[2]] = {};
 		writefile(fileName, tableToString(self[1]));
@@ -74,6 +77,10 @@ function settings.new(location)
 end;
 
 function settings:load(data)
+	if type(data) ~= 'table' then
+		return print('Error: data is not a table');
+	end;
+
 	local update = false;
 
 	for i,v in pairs(self[1][self[2]]) do
