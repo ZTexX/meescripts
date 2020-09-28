@@ -36,7 +36,7 @@ end;
 function modules:toggle()
     if self.toggleType == 'table' then
         local keepRunning;
-
+        warn('1');
         for i,v in pairs(self.toggleLog) do
             warn(i,v);
             if v == true then
@@ -47,6 +47,7 @@ function modules:toggle()
         end;
         self.toggled = keepRunning;
     else
+        warn('2');
         self.toggled = not self.toggled;
     end;
     
