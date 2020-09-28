@@ -38,6 +38,7 @@ function modules:toggle()
         local keepRunning;
 
         for i,v in pairs(self.toggleLog) do
+            warn(i,v);
             if v == true then
                 keepRunning = true;
                 break;
