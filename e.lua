@@ -64,7 +64,7 @@ function settings.new(location)
 	if update then
 		writefile(fileName, tableToString(self[1]));
 	end;
-
+	print(self[1][self[2]]);
 	if self[1][self[2]] == nil then
 		self[1][self[2]] = {};
 		writefile(fileName, tableToString(self[1]));
